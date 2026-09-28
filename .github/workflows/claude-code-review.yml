@@ -44,11 +44,15 @@ jobs:
             - Security concerns
             - Test coverage
             
-            Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
+            If the repository has a CLAUDE.md, follow it for style and conventions. Be constructive and helpful in your feedback.
 
             Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
           
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
-          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
+          # Pin the model explicitly. Without --model the action resolves to the
+          # account default, which the configured API key may not be entitled to;
+          # that fails in ~300ms with zero token usage and no usable error in the
+          # log, because show_full_output is off (this repository is public).
+          claude_args: '--model claude-sonnet-5 --allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
 
